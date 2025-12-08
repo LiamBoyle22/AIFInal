@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MintMade</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>What We Offer</h1>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <h2>Who We Are</h2>
+                <p>Mintmade Online offers a well-curated range of fashion items for men and women.</p>
+                <p>We aim to provide an enjoyable shopping experince fro all our customers.</p>
+            </div>
+
+            <div class="service-card">
+                <h2>Creative Solutions</h2>
+                <p>Innovative and creative solutions tailored to your unique business challenges, driving growth and success.</p>
+            </div>
+
+            <div class="service-card">
+                <h2>Data Analytics</h2>
+                <p>Advanced data analytics and insights to make informed decisions and optimize your business performance.</p>
+            </div>
+
+            <div class="service-card">
+                <h2>Digital Marketing</h2>
+                <p>Full-spectrum digital marketing services to increase your online presence and reach your target audience effectively.</p>
+            </div>
+
+            <div class="service-card">
+                <h2>Process Optimization</h2>
+                <p>Streamline your operations with our process optimization services, reducing costs and improving efficiency.</p>
+            </div>
+
+            <div class="service-card">
+                <h2>Consulting Services</h2>
+                <p>Expert consulting services to guide you through complex business challenges and opportunities.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" id="chatButton">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+            </svg>
+        </button>
+
+        <div class="chat-popup" id="chatPopup">
+            <div class="chat-header">
+                <h3>Ask Us Anything</h3>
+                <button class="close-chat" id="closeChat">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    Hello! How can I help you today? Feel free to ask any questions about our services.
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="chatInput" 
+                    placeholder="Type your message..."
+                    autocomplete="off"
+                >
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const chatButton = document.getElementById('chatButton');
+        const chatPopup = document.getElementById('chatPopup');
+        const closeChat = document.getElementById('closeChat');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Open chat
+        chatButton.addEventListener('click', () => {
+            chatPopup.classList.add('active');
+            chatInput.focus();
+        });
+
+        // Close chat
+        closeChat.addEventListener('click', () => {
+            chatPopup.classList.remove('active');
+        });
+
+        // Send message on button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Send message on Enter key
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Show user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+            sendButton.disabled = true;
+
+            try {
+                // This is where your ChatGPT integration will eventually go
+                const reply = await getAssistantReply(message);
+                addMessage(reply, 'bot');
+            } catch (error) {
+                console.error(error);
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            } finally {
+                sendButton.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        // Placeholder assistant reply.
+        // Replace the contents of this function later with your real ChatGPT / API call.
+        async function getAssistantReply(userMessage) {
+            // Simulate "thinking" time
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Simple echo-style placeholder
+            return "This is a demo reply. You said: \"" + userMessage + "\".\n\n" +
+                   "Once you hook this up to ChatGPT, I’ll respond with real AI answers here.";
+        }
+    </script>
+</body>
+</html>
