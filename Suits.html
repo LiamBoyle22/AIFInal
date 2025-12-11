@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MintMade</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 <body>
     <div class="container">
-        <h1>What We Offer</h1>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MintMade</title>
+
+            <!--Elegant serif + body fonts -->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+            <link rel="stylesheet" href="style.css">
+        </head>
+
+        <h1>'Fit your Fit'</h1>
         
         <div class="services-grid">
             <div class="service-card">
@@ -18,33 +23,18 @@
             </div>
 
             <div class="service-card">
-                <h2>Creative Solutions</h2>
-                <p>Innovative and creative solutions tailored to your unique business challenges, driving growth and success.</p>
+                <h2>Suits, Shoes, Ties</h2>
+                <p>Get your custom fit here, on us, no nonsense, no extra expense. Just good advice on how you want your suit to feel and fit.</p>
             </div>
 
             <div class="service-card">
-                <h2>Data Analytics</h2>
-                <p>Advanced data analytics and insights to make informed decisions and optimize your business performance.</p>
-            </div>
-
-            <div class="service-card">
-                <h2>Digital Marketing</h2>
-                <p>Full-spectrum digital marketing services to increase your online presence and reach your target audience effectively.</p>
-            </div>
-
-            <div class="service-card">
-                <h2>Process Optimization</h2>
-                <p>Streamline your operations with our process optimization services, reducing costs and improving efficiency.</p>
-            </div>
-
-            <div class="service-card">
-                <h2>Consulting Services</h2>
-                <p>Expert consulting services to guide you through complex business challenges and opportunities.</p>
+                <h2>Begin your Fitting</h2>
+                <p>Start your fitting journey here, by selecting a few simple fabrics and styles we can begin to customize your perfect suit.</p>
             </div>
         </div>
     </div>
 
-    <!-- Chat Widget -->
+    <!--Chat Widget-->
     <div class="chat-widget">
         <button class="chat-button" id="chatButton">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -76,7 +66,7 @@
     </div>
 
     <script>
-        // Elements
+        //Elements
         const chatButton = document.getElementById('chatButton');
         const chatPopup = document.getElementById('chatPopup');
         const closeChat = document.getElementById('closeChat');
@@ -84,21 +74,21 @@
         const sendButton = document.getElementById('sendButton');
         const chatMessages = document.getElementById('chatMessages');
 
-        // Open chat
+        //Open chat
         chatButton.addEventListener('click', () => {
             chatPopup.classList.add('active');
             chatInput.focus();
         });
 
-        // Close chat
+        //Close chat
         closeChat.addEventListener('click', () => {
             chatPopup.classList.remove('active');
         });
 
-        // Send message on button click
+        //Send message on button click
         sendButton.addEventListener('click', sendMessage);
 
-        // Send message on Enter key
+        //Send message on Enter key
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
@@ -117,13 +107,13 @@
             const message = chatInput.value.trim();
             if (!message) return;
 
-            // Show user message
+            //Show user message
             addMessage(message, 'user');
             chatInput.value = '';
             sendButton.disabled = true;
 
             try {
-                // This is where your ChatGPT integration will eventually go
+                //This is where your model routing will eventually go
                 const reply = await getAssistantReply(message);
                 addMessage(reply, 'bot');
             } catch (error) {
@@ -135,16 +125,36 @@
             }
         }
 
-        // Placeholder assistant reply.
-        // Replace the contents of this function later with your real ChatGPT / API call.
+       //Real assistant reply calls local Node backend
         async function getAssistantReply(userMessage) {
-            // Simulate "thinking" time
-            await new Promise(resolve => setTimeout(resolve, 500));
+            const response = await fetch('http://localhost:3000/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: userMessage,
+                    model: currentModel
+                })
+            });
 
-            // Simple echo-style placeholder
-            return "This is a demo reply. You said: \"" + userMessage + "\".\n\n" +
-                   "Once you hook this up to ChatGPT, I’ll respond with real AI answers here.";
-        }
+    if (!response.ok) {
+        throw new Error('Backend error: ' + response.statusText);
+    }
+
+    const data = await response.json();
+    return data.reply;
+}
+
+        const routeButtons = document.querySelectorAll('.route-button');
+        //Default to Llama 3 so the chat bubble uses it right away
+        let currentModel = 'llama3';
+
+        routeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentModel = btn.dataset.model;
+                alert('Routing future chat requests to: ' + currentModel.toUpperCase());
+            });
+        });
     </script>
 </body>
-</html>

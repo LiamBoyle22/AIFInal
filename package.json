@@ -1,0 +1,26 @@
+{
+  "name": "aifinal",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000A\u0000I\u0000F\u0000I\u0000n\u0000a\u0000l\u0000\r\u0000 \u0000",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiamBoyle22/AIFInal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LiamBoyle22/AIFInal/issues"
+  },
+  "homepage": "https://github.com/LiamBoyle22/AIFInal#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
+  }
+}
